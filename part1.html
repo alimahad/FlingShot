@@ -1,0 +1,124 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+	<title>Phaser - Making your first game, part 1</title>
+	<script type="text/javascript" src="js/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+//preloads images that are used in the file
+
+
+function preload() {
+	game.load.image('ball','assets/paperBall.png');
+	game.load.image('slingshot', 'assets/CatapultSprite.png');
+	
+	game.load.image('arrow', 'assets/longarrow.png')
+	game.load.image('arrowExtension', 'assets/green.png');
+	//game.load.image('background', 'assets/Flingshot.png');
+}
+
+var ball;
+var arrow;
+var ballHeld = false;
+var speed= 1;
+function create() {
+	//game.add.sprite(0,0,'background');
+    ball = game.add.sprite(330,260,'ball');
+	ball.scale.setTo(0.15,0.15);
+	var slingshot = game.add.sprite(250, 222, 'slingshot');
+	arrow = game.add.sprite(360,260,'arrow');
+
+	game.physics.arcade.enable(ball);
+	//enables the ball to be dragged by the mouse
+	ball.inputEnabled = true;
+	ball.input.enableDrag(true);
+	
+	ball.body.collideWorldBounds = true;
+
+
+
+	//enables arcade physics
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+	game.physics.arcade.gravity.y =200; //sets the world gravity 
+	ball.body.allowGravity = false;
+
+	arrowExtension = game.add.sprite(350,360,'arrowExtension');
+	game.physics.enable(arrowExtension, Phaser.Physics.ARCADE);
+	arrowExtension.body.allowGravity = false;
+	//so it is not affected by "world" gravity
+
+	arrowExtension.width = 8;
+	arrowExtension.rotation = 220;
+	arrowExtension.anchor.setTo(1,1);
+
+	game.physics.enable(arrow, Phaser.Physics.ARCADE);
+	arrow.anchor.setTo(0.005,-0.3); // lower the x the more it moves forward
+	arrow.body.moves = false;
+	arrow.body.allowGravity = false;
+	arrow.rotation = 220;
+
+	ball.events.onInputUp.add(launchBall);
+	ball.events.onInputDown.add(holdBall);
+	
+
+	
+
+}
+
+function holdBall()
+{
+	ball.body.allowGravity = false;
+	ball.body.moves = false; //stops bouncing
+	ballHeld = true;
+
+
+}
+
+function launchBall()
+{
+	ball.body.moves = true;
+	ball.body.allowGravity = true;
+	ball.body.velocity.setTo(10);
+	ball.body.bounce.setTo(0.9,0.9);
+	ballHeld = false;
+	
+}
+
+function update() {
+	//updates the angle between the arrow and ball 
+	arrow.rotation = game.physics.arcade.angleBetween(arrow,ball)
+
+	if(ballHeld){
+		ballX = game.input.activePointer.X;
+		ballY = game.input.activePointer.Y;
+		arrowExtensionHeight = game.physics.arcade.distanceToPointer(arrow);
+		arrowExtension.rotation = arrow.rotation;
+		speed = arrowExtensionHeight*10;
+
+
+	}
+}
+
+/* 
+Notes 
+- A Pointer object is used by the Mouse, represents the mouse or a single finger on the touch screen 
+- active pointer : one that is currently pressed down
+- Phaser.Input : InputManager for all touch/mouse/keyboard input 
+
+Question - differnce between WorldX and X?
+*/
+</script>
+
+</body>
+</html>
