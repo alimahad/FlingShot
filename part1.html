@@ -14,100 +14,50 @@
 
 <script type="text/javascript">
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create });
 
-//preloads images that are used in the file
+var text;
+var counter = 0;
+
+function preload () {
+
+    //  You can fill the preloader with as many assets as your game requires
+
+    //  Here we are loading an image. The first parameter is the unique
+    //  string by which we'll identify the image later in our code.
+
+    //  The second parameter is the URL of the image (relative)
+
+    game.load.image('einstein', 'assets/star.png');
 
 
-function preload() {
-	game.load.image('ball','assets/paperBall.png');
-	game.load.image('slingshot', 'assets/CatapultSprite.png');
-	
-	game.load.image('arrow', 'assets/longarrow.png')
-	game.load.image('arrowExtension', 'assets/green.png');
-	//game.load.image('background', 'assets/Flingshot.png');
 }
 
-var ball;
-var arrow;
-var ballHeld = false;
-var speed= 1;
 function create() {
-	//game.add.sprite(0,0,'background');
-    ball = game.add.sprite(330,260,'ball');
-	ball.scale.setTo(0.15,0.15);
-	var slingshot = game.add.sprite(250, 222, 'slingshot');
-	arrow = game.add.sprite(360,260,'arrow');
-
-	game.physics.arcade.enable(ball);
-	//enables the ball to be dragged by the mouse
-	ball.inputEnabled = true;
-	ball.input.enableDrag(true);
-	
-	ball.body.collideWorldBounds = true;
 
 
 
-	//enables arcade physics
-	game.physics.startSystem(Phaser.Physics.ARCADE);
-	game.physics.arcade.gravity.y =200; //sets the world gravity 
-	ball.body.allowGravity = false;
+    //  This creates a simple sprite that is using our loaded image and
+    //  displays it on-screen and assign it to a variable
+    var image = game.add.sprite(game.world.centerX, game.world.centerY, 'einstein');
 
-	arrowExtension = game.add.sprite(350,360,'arrowExtension');
-	game.physics.enable(arrowExtension, Phaser.Physics.ARCADE);
-	arrowExtension.body.allowGravity = false;
-	//so it is not affected by "world" gravity
+    //  Moves the image anchor to the middle, so it centers inside the game properly
+    image.anchor.set(0.5);
 
-	arrowExtension.width = 8;
-	arrowExtension.rotation = 220;
-	arrowExtension.anchor.setTo(1,1);
+    //  Enables all kind of input actions on this image (click, etc)
+    image.inputEnabled = true;
 
-	game.physics.enable(arrow, Phaser.Physics.ARCADE);
-	arrow.anchor.setTo(0.005,-0.3); // lower the x the more it moves forward
-	arrow.body.moves = false;
-	arrow.body.allowGravity = false;
-	arrow.rotation = 220;
+    text = game.add.text(250, 16, '', { fill: '#ffffff' });
 
-	ball.events.onInputUp.add(launchBall);
-	ball.events.onInputDown.add(holdBall);
-	
-
-	
+    image.events.onInputDown.add(listener, this);
 
 }
 
-function holdBall()
-{
-	ball.body.allowGravity = false;
-	ball.body.moves = false; //stops bouncing
-	ballHeld = true;
+function listener () {
 
+    counter++;
+    text.text = "You clicked " + counter + " times!";
 
-}
-
-function launchBall()
-{
-	ball.body.moves = true;
-	ball.body.allowGravity = true;
-	ball.body.velocity.setTo(10);
-	ball.body.bounce.setTo(0.9,0.9);
-	ballHeld = false;
-	
-}
-
-function update() {
-	//updates the angle between the arrow and ball 
-	arrow.rotation = game.physics.arcade.angleBetween(arrow,ball)
-
-	if(ballHeld){
-		ballX = game.input.activePointer.X;
-		ballY = game.input.activePointer.Y;
-		arrowExtensionHeight = game.physics.arcade.distanceToPointer(arrow);
-		arrowExtension.rotation = arrow.rotation;
-		speed = arrowExtensionHeight*10;
-
-
-	}
 }
 
 /* 
