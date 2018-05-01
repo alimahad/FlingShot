@@ -13,7 +13,7 @@ User Documentation
 
 **Installation**
 
-No hardware installation is necessary. Please visit http://taneeya96.github.io/Great-Expectasians/Flingshot/ and enjoy the game.
+No hardware installation is necessary. Please visit https://alimahad.github.io/Great-Expectasians/Flingshot/ and enjoy the game.
 
 The game works for both Android and Apple devices. It is compatiable with most browsers (i.e.: Chrome, Firefox, Safari, IE, Opera.) This game is best experienced on a mobile, touch-screen device.
 
@@ -39,12 +39,12 @@ You need to reach the level score goal, displayed next to your current score and
 
 4. How can I play this game?
 
-Visit this link: http://taneeya96.github.io/Great-Expectasians/Flingshot/
+Visit this link: https://alimahad.github.io/Great-Expectasians/Flingshot/
 
 Developer Documentation
 -----------------------
 
-This is a working version of the game. To clone the latest version, please visit https://github.com/taneeya96/Great-Expectasians. 
+This is a working version of the game. To clone the latest version, please visit https://alimahad.github.io/Great-Expectasians. 
 
 This game was written with JavaScript and used Phaser as the game engine. It requires Phaser 2.7.7 or later, and HTML5 or later. Please visit https://phaser.io/ to install the game engine and check out their tutorials/documentations. Additionally, polylines for collision objects in this game were created using PhysicsEditor, though any similar software would work. Animations in the game are created using sprite sheets. After cloning or downloading the project, run it using your local server. 
 
